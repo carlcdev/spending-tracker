@@ -1,0 +1,4 @@
+{
+    "packages": ["packages/*", "payments-service", "payments-client"],
+    "version": "0.0.0"
+}
