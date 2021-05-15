@@ -9,13 +9,13 @@ A simple payments service, using Node, TypeScript and Lerna.
 
 ## Architecture
 
-A visual representation of the API:
+A visual representation of the solution:
 
 ![image architecture](./docs/architecture.png)
 
 ## API documentation
 
-The API is documented using the OpenAPI specification. To view/edit the docs, copy the contents of the [payments-service.yaml](./openapi/payments-service.yaml) into the [Swagger Editor](https://editor.swagger.io/)
+The API is documented using the OpenAPI specification. To view/edit the docs, copy the contents of the [payments-service.yaml](./docs/payments-service.yml) into the [Swagger Editor](https://editor.swagger.io/)
 
 ## Installation
 
