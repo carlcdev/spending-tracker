@@ -1,0 +1,33 @@
+service: payments-service
+frameworkVersion: 2
+provider:
+  name: aws
+  lambdaHashingVersion: 20201221
+  runtime: nodejs12.x
+  memorySize: 128
+  stage: dev
+  region: eu-west-1
+  apiGateway:
+    shouldStartNameWithService: true
+    minimumCompressionSize: 1024
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+plugins:
+  - serverless-bundle
+  - serverless-offline
+package:
+  individually: true
+functions:
+  get-account:
+    handler: src/account/get-account/get-account.getAccount
+    timeout: 10
+    events:
+      - http:
+          path: get-account/{accountId}
+          method: get
+          request:
+            parameters:
+              paths:
+                accountId: true
+resources:
+  - ${file(src/resources/dynamodb/account-table.yml)}

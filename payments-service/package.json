@@ -1,0 +1,26 @@
+{
+    "name": "payments-service",
+    "version": "1.0.0",
+    "description": "A simple payments service",
+    "main": "index.ts",
+    "scripts": {
+        "build": "sls package",
+        "deploy": "sls deploy",
+        "start": "sls offline",
+        "test": "jest --config jestconfig.json",
+        "test:watch": "jest --config jestconfig.json --watch",
+        "lint": "eslint src --ext .ts"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "jest": "^26.6.3",
+        "serverless": "^2.41.2",
+        "serverless-bundle": "^4.3.1",
+        "serverless-offline": "^7.0.0",
+        "ts-jest": "^26.4.4"
+    },
+    "dependencies": {
+        "@packages/logger": "^1.0.0"
+    }
+}
