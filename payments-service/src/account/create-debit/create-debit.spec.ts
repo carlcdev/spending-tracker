@@ -36,7 +36,7 @@ describe('create-debit', () => {
         });
         mockDebitAccount.mockResolvedValueOnce({
           id: 'debit-id',
-          accountIdFrom: 'accountIdFrom',
+          accountId: 'account-id',
           type: 'DEBIT',
           created: '2021-01-01T00:00:00Z',
           value: 100,
@@ -46,7 +46,7 @@ describe('create-debit', () => {
 
         expect(result).toEqual({
           id: 'debit-id',
-          accountIdFrom: 'accountIdFrom',
+          accountId: 'account-id',
           type: 'DEBIT',
           created: '2021-01-01T00:00:00Z',
           value: 100,
@@ -62,7 +62,7 @@ describe('create-debit', () => {
         });
         mockDebitAccount.mockResolvedValueOnce({
           id: 'debit-id',
-          accountIdFrom: 'accountIdFrom',
+          accountId: 'account-id',
           type: 'DEBIT',
           created: '2021-01-01T00:00:00Z',
           value: 100,

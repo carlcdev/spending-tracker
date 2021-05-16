@@ -90,7 +90,7 @@ describe('create-credit-api-gateway', () => {
     it('should return a 201 with the credit transfer record', async () => {
       mockedCreateCreditHandler.mockResolvedValueOnce({
         id: 'credit-transfer-id',
-        accountIdFrom: 'account-id-from',
+        accountId: 'account-id',
         type: 'CREDIT',
         created: '2021-01-01T00:00:00Z',
         value: 100,
@@ -102,7 +102,7 @@ describe('create-credit-api-gateway', () => {
         statusCode: 201,
         body: JSON.stringify({
           id: 'credit-transfer-id',
-          accountIdFrom: 'account-id-from',
+          accountId: 'account-id',
           type: 'CREDIT',
           created: '2021-01-01T00:00:00Z',
           value: 100,

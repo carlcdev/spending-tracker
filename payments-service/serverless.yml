@@ -59,6 +59,17 @@ functions:
             parameters:
               paths:
                 accountId: true
+  list-transfers:
+    handler: src/account/list-transfers/list-transfers-api-gateway.listTransfersApiGateway
+    timeout: 10
+    events:
+      - http:
+          path: accounts/{accountId}/transfers
+          method: get
+          request:
+            parameters:
+              paths:
+                accountId: true
 resources:
   - ${file(src/resources/dynamodb/accounts-table.yml)}
   - ${file(src/resources/dynamodb/transfers-table.yml)}

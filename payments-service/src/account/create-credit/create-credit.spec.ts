@@ -35,7 +35,7 @@ describe('create-credit', () => {
       });
       mockCreditAccount.mockResolvedValueOnce({
         id: 'credit-id',
-        accountIdFrom: 'accountIdFrom',
+        accountId: 'account-id',
         type: 'CREDIT',
         created: '2021-01-01T00:00:00Z',
         value: 100,
@@ -45,7 +45,7 @@ describe('create-credit', () => {
 
       expect(result).toEqual({
         id: 'credit-id',
-        accountIdFrom: 'accountIdFrom',
+        accountId: 'account-id',
         type: 'CREDIT',
         created: '2021-01-01T00:00:00Z',
         value: 100,

@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "0fe50fa0-5cb6-483f-a142-ee19c5c87998",
+		"name": "Example Payment Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/dev/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"accounts"
+					]
+				},
+				"description": "Create Account"
+			},
+			"response": []
+		},
+		{
+			"name": "Credit Account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Idempotency-Key",
+						"value": "{{$guid}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value\": 100\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/dev/accounts/12345678/transfers/credit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"accounts",
+						"12345678",
+						"transfers",
+						"credit"
+					]
+				},
+				"description": "Credit an account"
+			},
+			"response": []
+		},
+		{
+			"name": "Debit Account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Idempotency-Key",
+						"value": "{{$guid}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value\": 100\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/dev/accounts/12345678/transfers/debit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"accounts",
+						"12345678",
+						"transfers",
+						"debit"
+					]
+				},
+				"description": "Debit an account"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/dev/accounts/12345678",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"accounts",
+						"12345678"
+					]
+				},
+				"description": "Gets an account"
+			},
+			"response": []
+		},
+		{
+			"name": "List Transfers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/dev/accounts/12345678/transfers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"dev",
+						"accounts",
+						"12345678",
+						"transfers"
+					]
+				},
+				"description": "List transfer records"
+			},
+			"response": []
+		}
+	]
+}

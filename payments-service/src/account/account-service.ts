@@ -14,7 +14,7 @@ export interface Account {
 
 export interface Transfer {
   id: string;
-  accountIdFrom: string;
+  accountId: string;
   type: TransferType;
   created: string;
   value: number;
@@ -80,7 +80,7 @@ export async function creditAccount(
 ): Promise<Transfer> {
   const creditRecord: Transfer = {
     id: uuid(),
-    accountIdFrom: accountId,
+    accountId,
     type: TransferType.CREDIT,
     created: new Date().toISOString(),
     value,
@@ -122,7 +122,7 @@ export async function debitAccount(
 ): Promise<Transfer> {
   const debitRecord: Transfer = {
     id: uuid(),
-    accountIdFrom: accountId,
+    accountId,
     type: TransferType.DEBIT,
     created: new Date().toISOString(),
     value,
@@ -157,4 +157,23 @@ export async function debitAccount(
     .promise();
 
   return debitRecord;
+}
+
+// TODO: Move this to transfers service
+export async function listTransfers(accountId: string): Promise<Transfer[]> {
+  const transfers = await dynamo
+    .query({
+      TableName: 'local-transfers', // TODO: get from config
+      IndexName: 'local-transfers-gsi-1',
+      KeyConditionExpression: 'accountId = :accountId',
+      ExpressionAttributeValues: {
+        ':accountId': accountId,
+      },
+      ScanIndexForward: false,
+    })
+    .promise();
+
+  const items = transfers.Items as Transfer[];
+
+  return items;
 }

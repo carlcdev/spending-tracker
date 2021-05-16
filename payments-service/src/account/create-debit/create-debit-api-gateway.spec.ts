@@ -90,7 +90,7 @@ describe('create-debit-api-gateway', () => {
     it('should return a 201 with the debit transfer record', async () => {
       mockedCreateDebitHandler.mockResolvedValueOnce({
         id: 'debit-transfer-id',
-        accountIdFrom: 'account-id-from',
+        accountId: 'account-id',
         type: 'DEBIT',
         created: '2021-01-01T00:00:00Z',
         value: 100,
@@ -102,7 +102,7 @@ describe('create-debit-api-gateway', () => {
         statusCode: 201,
         body: JSON.stringify({
           id: 'debit-transfer-id',
-          accountIdFrom: 'account-id-from',
+          accountId: 'account-id',
           type: 'DEBIT',
           created: '2021-01-01T00:00:00Z',
           value: 100,
