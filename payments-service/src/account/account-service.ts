@@ -93,6 +93,7 @@ export async function creditAccount(
           Put: {
             TableName: 'local-transfers', // TODO: get from config
             Item: creditRecord,
+            ConditionExpression: 'attribute_not_exists(id)',
           },
         },
         {
@@ -112,4 +113,48 @@ export async function creditAccount(
     .promise();
 
   return creditRecord;
+}
+
+export async function debitAccount(
+  accountId: string,
+  value: number,
+  idempotencyKey: string
+): Promise<Transfer> {
+  const debitRecord: Transfer = {
+    id: uuid(),
+    accountIdFrom: accountId,
+    type: TransferType.DEBIT,
+    created: new Date().toISOString(),
+    value,
+  };
+
+  await dynamo
+    .transactWrite({
+      TransactItems: [
+        {
+          Put: {
+            TableName: 'local-transfers', // TODO: get from config
+            Item: debitRecord,
+            ConditionExpression: 'attribute_not_exists(id)',
+          },
+        },
+        {
+          Update: {
+            TableName: 'local-accounts',
+            Key: { id: accountId },
+            UpdateExpression: 'set #balance = #balance - :debitValue',
+            ConditionExpression: '#balance > :min',
+            ExpressionAttributeNames: { '#balance': 'balance' },
+            ExpressionAttributeValues: {
+              ':debitValue': value,
+              ':min': 0,
+            },
+          },
+        },
+      ],
+      ClientRequestToken: idempotencyKey,
+    })
+    .promise();
+
+  return debitRecord;
 }

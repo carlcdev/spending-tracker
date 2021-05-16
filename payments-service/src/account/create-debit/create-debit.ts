@@ -1,20 +1,20 @@
 import { logger } from '@packages/logger';
-import { NotFound } from '@packages/errors';
-import { Transfer, creditAccount, getAccountById } from '../account-service';
+import { BadRequest, NotFound } from '@packages/errors';
+import { Transfer, debitAccount, getAccountById } from '../account-service';
 
-export interface CreateCredit {
+export interface CreateDebit {
   correlationId: string;
   accountId: string;
   idempotencyKey: string;
   value: number;
 }
 
-export async function createCreditHandler({
+export async function createDebitHandler({
   correlationId,
   accountId,
   idempotencyKey,
   value,
-}: CreateCredit): Promise<Transfer> {
+}: CreateDebit): Promise<Transfer> {
   const loggerContext = {
     correlationId,
     idempotencyKey,
@@ -31,11 +31,15 @@ export async function createCreditHandler({
     throw new NotFound('Account not found');
   }
 
-  logger.info('creating credit transfer record', {
+  if (account.balance - value < 0) {
+    throw new BadRequest('The balance is too low to process this transaction');
+  }
+
+  logger.info('creating debit transfer record', {
     ...loggerContext,
     accountId,
     value,
   });
 
-  return creditAccount(accountId, value, idempotencyKey);
+  return debitAccount(accountId, value, idempotencyKey);
 }

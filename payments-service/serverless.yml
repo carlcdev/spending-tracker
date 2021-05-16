@@ -27,6 +27,13 @@ custom:
       - local
     debug: true
 functions:
+  debit-account:
+    handler: src/account/create-debit/create-debit-api-gateway.createDebitApiGateway
+    timeout: 10
+    events:
+      - http:
+          path: accounts/{accountId}/transfers/debit
+          method: post
   credit-account:
     handler: src/account/create-credit/create-credit-api-gateway.createCreditApiGateway
     timeout: 10

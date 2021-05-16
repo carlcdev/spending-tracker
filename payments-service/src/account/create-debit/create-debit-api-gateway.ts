@@ -1,13 +1,13 @@
 import { logger, initLogger } from '@packages/logger';
 import { BadRequest, apiGatewayErrorTransformer } from '@packages/errors';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { createCreditHandler } from './create-credit';
+import { createDebitHandler } from './create-debit';
 
-export async function createCreditApiGateway(
+export async function createDebitApiGateway(
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> {
   try {
-    initLogger('payments-service.create-credit');
+    initLogger('payments-service.create-debit');
 
     const idempotencyKey = event.headers['Idempotency-Key'];
     const { accountId } = event.pathParameters;
@@ -35,7 +35,7 @@ export async function createCreditApiGateway(
       value,
     };
 
-    const transfer = await createCreditHandler(payload);
+    const transfer = await createDebitHandler(payload);
 
     return {
       statusCode: 201,
