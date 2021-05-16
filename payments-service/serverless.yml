@@ -1,11 +1,11 @@
 service: payments-service
-frameworkVersion: 2
+frameworkVersion: '2'
 provider:
   name: aws
   lambdaHashingVersion: 20201221
   runtime: nodejs12.x
   memorySize: 128
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   region: eu-west-1
   apiGateway:
     shouldStartNameWithService: true
@@ -14,20 +14,44 @@ provider:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
 plugins:
   - serverless-bundle
+  - serverless-localstack
   - serverless-offline
 package:
   individually: true
+custom:
+  localstack:
+    host: http://localhost
+    edgePort: 4566
+    endpointFile: localstack-endpoints.json
+    stages:
+      - local
+    debug: true
 functions:
-  get-account:
-    handler: src/account/get-account/get-account.getAccount
+  credit-account:
+    handler: src/account/create-credit/create-credit-api-gateway.createCreditApiGateway
     timeout: 10
     events:
       - http:
-          path: get-account/{accountId}
+          path: accounts/{accountId}/transfers/credit
+          method: post
+  create-account:
+    handler: src/account/create-account/create-account-api-gateway.createAccountApiGateway
+    timeout: 10
+    events:
+      - http:
+          path: accounts
+          method: post
+  get-account:
+    handler: src/account/get-account/get-account-api-gateway.getAccountApiGateway
+    timeout: 10
+    events:
+      - http:
+          path: accounts/{accountId}
           method: get
           request:
             parameters:
               paths:
                 accountId: true
 resources:
-  - ${file(src/resources/dynamodb/account-table.yml)}
+  - ${file(src/resources/dynamodb/accounts-table.yml)}
+  - ${file(src/resources/dynamodb/transfers-table.yml)}

@@ -7,7 +7,26 @@ tags:
   - name: Account
     description: Account specific functionality
 paths:
-  /account/{accountId}:
+  /accounts:
+    post:
+      tags:
+        - Account
+      summary: Create an account record
+      description: Creates an account to store funds
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /accounts/{accountId}:
     get:
       tags:
         - Account
@@ -35,7 +54,7 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
-  /account/{accountId}/transfers:
+  /accounts/{accountId}/transfers:
     get:
       tags:
         - Account
@@ -63,11 +82,12 @@ paths:
           description: Unauthorized
         '404':
           description: Not Found
+  /accounts/{accountId}/transfers/credit:
     post:
       tags:
         - Account
-      summary: Create a transfer record
-      description: Transfer money between accounts
+      summary: Create a credit transfer record
+      description: Credit an account
       parameters:
         - name: accountId
           in: path
@@ -80,7 +100,39 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateTransferRequest'
+              $ref: '#/components/schemas/TransferRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transfer'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /accounts/{accountId}/transfers/debit:
+    post:
+      tags:
+        - Account
+      summary: Create a debit transfer record
+      description: Debit an account
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          description: Account ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferRequest'
       responses:
         '201':
           description: Created
@@ -104,31 +156,22 @@ components:
           type: number
     AccountResponse:
       $ref: '#/components/schemas/Account'
-    CreateTransferRequest:
+    TransferRequest:
       required:
-        - to
-        - type
-        - amount
+        - value
       properties:
-        to:
-          type: string
-        type:
-          type: string
-        amount:
+        value:
           type: number
     Transfer:
       properties:
-        id:
-          type: string
-        to:
-          type: string
-        action:
-          type: string
+        type: string
           enum:
             - DEBIT
             - CREDIT
-        amount:
+        value:
           type: number
+        created:
+          type: string
     TransferListResponse:
       properties:
         total:

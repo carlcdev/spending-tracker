@@ -4,13 +4,14 @@
   "scripts": {
     "add": "lerna add",
     "bootstrap": "lerna bootstrap",
+    "environment": "lerna run environment --stream",
     "build": "lerna run build --stream --concurrency=4",
     "deploy": "lerna run deploy --stream",
     "lerna": "lerna",
     "lint": "lerna run lint --stream --concurrency=4",
     "postinstall": "npm run bootstrap",
     "remove": "lerna run remove --stream",
-    "start": "lerna run start",
+    "start": "lerna run start --stream",
     "test": "lerna run test --stream --concurrency=4"
   },
   "devDependencies": {

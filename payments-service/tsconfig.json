@@ -1,12 +1,10 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
+    "target": "es6",
+    "moduleResolution": "node",
     "baseUrl": ".",
-    "target": "es5",
-    "module": "commonjs",
-    "declaration": true,
-    "outDir": "./lib",
-    "strict": true
   },
   "include": ["src/**/*.ts", ".eslintrc.js"],
-  "exclude": ["node_modules", ".serverless", ".webpack"]
+  "exclude": ["node_modules/**/*", ".serverless/**/*", ".webpack/**/*"]
 }

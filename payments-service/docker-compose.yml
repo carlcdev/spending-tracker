@@ -1,0 +1,14 @@
+version: '2'
+services:
+  localstack:
+    image: localstack/localstack:0.12.11
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+      - "${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}"
+    environment:
+      - SERVICES=s3,sns,sqs,sts,apigateway,lambda,dynamodb,cloudformation,iam
+      - DEFAULT_REGION=eu-west-1
+    volumes:
+      - "${TMP_DIR:-/tmp/localstack}:${TMP_DIR:-/tmp/localstack}"
+      - "/var/run/docker.sock:/var/run/docker.sock"

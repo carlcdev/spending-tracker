@@ -1,23 +1,31 @@
 import { logger } from '@packages/logger';
-import { APIGatewayProxyResult } from 'aws-lambda';
+import { NotFound } from '@packages/errors';
+import { Account, getAccountById } from '../account-service';
 
-interface GetAccountEvent {
-  pathParameters: {
-    accountId: string;
-  };
+export interface GetAccount {
+  correlationId: string;
+  accountId: string;
 }
 
-export async function getAccount(
-  event: GetAccountEvent
-): Promise<APIGatewayProxyResult> {
-  const { accountId } = event.pathParameters;
-
-  logger.info('getting account details', {
+export async function getAccountHandler({
+  accountId,
+  correlationId,
+}: GetAccount): Promise<Account> {
+  logger.info('fetching account', {
+    correlationId,
     accountId,
   });
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ test: 'test' }),
-  };
+  const accountExists = await getAccountById(accountId);
+
+  if (!accountExists) {
+    throw new NotFound('Account not found');
+  }
+
+  logger.info('account found', {
+    correlationId,
+    accountId,
+  });
+
+  return accountExists;
 }
