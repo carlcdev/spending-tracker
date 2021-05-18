@@ -5,6 +5,8 @@ import { Loading } from '../components/Loading';
 const defaultProps = {
   accountSelected: false,
   loading: false,
+  balance: 0,
+  accountNumber: ''
 };
 
 type Props = {
@@ -91,6 +93,8 @@ export function AccountCard({
   accountSelected,
   noAccountSelectedComponent,
   loading,
+  balance,
+  accountNumber
 }: Props) {
   return (
     <AccountCardContainer accountSelected={accountSelected}>
@@ -102,9 +106,9 @@ export function AccountCard({
       )}
       <AccountCardBody accountSelected={accountSelected}>
         <BankName>bank</BankName>
-        <AccountNumber>12345678</AccountNumber>
+        <AccountNumber>{accountNumber}</AccountNumber>
         <BalanceContainer>
-          <Balance>£123</Balance>
+          <Balance>£{balance}</Balance>
         </BalanceContainer>
       </AccountCardBody>
     </AccountCardContainer>
