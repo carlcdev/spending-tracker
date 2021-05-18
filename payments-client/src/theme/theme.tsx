@@ -2,6 +2,7 @@ export const colourPalette = {
   body: '#FFF',
   backgroundColor: '#FFF',
   error: '#E63946',
+  warning: '#e6a739',
   info: '#247ba0',
   mono0: '#000000',
   mono1: '#232323',

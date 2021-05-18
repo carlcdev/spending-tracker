@@ -1,9 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { accountReducer } from './state/slices/account';
+import { transfersReducer } from './state/slices/transfers';
+import { notificationReducer } from './state/slices/notification';
 
 export const store = configureStore({
   reducer: {
     account: accountReducer,
+    notification: notificationReducer,
+    transfers: transfersReducer,
   },
 });
 

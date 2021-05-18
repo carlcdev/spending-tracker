@@ -6,7 +6,7 @@ const defaultProps = {
   accountSelected: false,
   loading: false,
   balance: 0,
-  accountNumber: ''
+  accountNumber: '',
 };
 
 type Props = {
@@ -94,23 +94,32 @@ export function AccountCard({
   noAccountSelectedComponent,
   loading,
   balance,
-  accountNumber
+  accountNumber,
 }: Props) {
   return (
     <AccountCardContainer accountSelected={accountSelected}>
       {loading && (
-        <NoAccountBody><Loading /></NoAccountBody>
+        <NoAccountBody>
+          <Loading />
+        </NoAccountBody>
       )}
       {!accountSelected && !loading && (
         <NoAccountBody>{noAccountSelectedComponent}</NoAccountBody>
       )}
-      <AccountCardBody accountSelected={accountSelected}>
-        <BankName>bank</BankName>
-        <AccountNumber>{accountNumber}</AccountNumber>
-        <BalanceContainer>
-          <Balance>£{balance}</Balance>
-        </BalanceContainer>
-      </AccountCardBody>
+      {!loading && (
+        <AccountCardBody accountSelected={accountSelected}>
+          <BankName>bank</BankName>
+          <AccountNumber>{accountNumber}</AccountNumber>
+          <BalanceContainer>
+            <Balance>
+              {new Intl.NumberFormat('en-GB', {
+                style: 'currency',
+                currency: 'GBP',
+              }).format(balance)}
+            </Balance>
+          </BalanceContainer>
+        </AccountCardBody>
+      )}
     </AccountCardContainer>
   );
 }

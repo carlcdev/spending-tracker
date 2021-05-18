@@ -4,8 +4,10 @@ import { Account } from './pages/Account';
 export function Routes() {
   return (
     <Switch>
-      <Route exact path="/account/12345678" component={Account} /> { /* Hardcoded account id */ }
-      <Redirect exact from="/" to="/account/12345678" />
+      <Route exact path="/account/12345678" component={Account} />{' '}
+      {/* Hardcoded account id */}
+      {/* Redirect to account route as default route */}
+      <Redirect exact from="/" to="/account/12345678" />{' '}
     </Switch>
   );
 }

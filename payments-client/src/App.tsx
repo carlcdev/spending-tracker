@@ -7,6 +7,7 @@ import GlobalStyle from './theme/global-styles';
 import { grommetTheme } from './theme/grommet-theme';
 import * as theme from './theme/theme';
 import { Routes } from './Routes';
+import { Notification } from './components/Notification';
 import { store } from './store';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Router>
             <Routes />
           </Router>
+          <Notification />
         </Provider>
       </ThemeProvider>
     </Grommet>

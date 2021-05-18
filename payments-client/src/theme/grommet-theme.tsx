@@ -1,6 +1,7 @@
+import { ThemeType } from 'grommet';
 import * as theme from './theme';
 
-export const grommetTheme = {
+export const grommetTheme: ThemeType = {
   global: {
     colors: {
       brand: theme.colourPalette.primary,
@@ -37,6 +38,7 @@ export const grommetTheme = {
         color: theme.colourPalette.error,
       },
       color: 'border',
+      side: 'all',
     },
     disabled: {
       background: {
@@ -50,14 +52,12 @@ export const grommetTheme = {
       },
     },
     error: {
-      size: 'xsmall',
       color: theme.colourPalette.error,
       margin: {
         start: 'none',
       },
     },
     help: {
-      size: 'xsmall',
       color: 'text-weak',
       margin: {
         start: 'none',
@@ -65,7 +65,6 @@ export const grommetTheme = {
       },
     },
     info: {
-      size: 'xsmall',
       color: theme.colourPalette.info,
       margin: {
         start: 'none',
