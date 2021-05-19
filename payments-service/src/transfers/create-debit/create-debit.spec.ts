@@ -1,8 +1,10 @@
 import { BadRequest, NotFound } from '@packages/errors';
 import { createDebitHandler, CreateDebit } from './create-debit';
-import { getAccountById, debitAccount } from '../account-service';
+import { getAccountById } from '../../account/account-service';
+import { debitAccount } from '../transfers-service';
 
-jest.mock('../account-service');
+jest.mock('../../account/account-service');
+jest.mock('../transfers-service');
 
 const mockGetAccountById = <jest.Mock>getAccountById;
 const mockDebitAccount = <jest.Mock>debitAccount;

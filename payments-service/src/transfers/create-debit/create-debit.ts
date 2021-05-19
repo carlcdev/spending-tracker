@@ -1,6 +1,7 @@
 import { logger } from '@packages/logger';
 import { BadRequest, NotFound } from '@packages/errors';
-import { Transfer, debitAccount, getAccountById } from '../account-service';
+import { getAccountById } from '../../account/account-service';
+import { Transfer, debitAccount } from '../transfers-service';
 
 export interface CreateDebit {
   correlationId: string;

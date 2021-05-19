@@ -28,14 +28,14 @@ custom:
     debug: true
 functions:
   debit-account:
-    handler: src/account/create-debit/create-debit-api-gateway.createDebitApiGateway
+    handler: src/transfers/create-debit/create-debit-api-gateway.createDebitApiGateway
     timeout: 10
     events:
       - http:
           path: accounts/{accountId}/transfers/debit
           method: post
   credit-account:
-    handler: src/account/create-credit/create-credit-api-gateway.createCreditApiGateway
+    handler: src/transfers/create-credit/create-credit-api-gateway.createCreditApiGateway
     timeout: 10
     events:
       - http:
@@ -60,7 +60,7 @@ functions:
               paths:
                 accountId: true
   list-transfers:
-    handler: src/account/list-transfers/list-transfers-api-gateway.listTransfersApiGateway
+    handler: src/transfers/list-transfers/list-transfers-api-gateway.listTransfersApiGateway
     timeout: 10
     events:
       - http:

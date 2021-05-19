@@ -1,8 +1,10 @@
 import { NotFound } from '@packages/errors';
 import { createCreditHandler, CreateCredit } from './create-credit';
-import { getAccountById, creditAccount } from '../account-service';
+import { getAccountById } from '../../account/account-service';
+import { creditAccount } from '../transfers-service';
 
-jest.mock('../account-service');
+jest.mock('../../account/account-service');
+jest.mock('../transfers-service');
 
 const mockGetAccountById = <jest.Mock>getAccountById;
 const mockCreditAccount = <jest.Mock>creditAccount;

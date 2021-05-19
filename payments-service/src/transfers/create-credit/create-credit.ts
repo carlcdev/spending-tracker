@@ -1,6 +1,7 @@
 import { logger } from '@packages/logger';
 import { NotFound } from '@packages/errors';
-import { Transfer, creditAccount, getAccountById } from '../account-service';
+import { getAccountById } from '../../account/account-service';
+import { creditAccount, Transfer } from '../../transfers/transfers-service';
 
 export interface CreateCredit {
   correlationId: string;

@@ -1,8 +1,10 @@
 import { NotFound } from '@packages/errors';
 import { listTransfersHandler, ListTransfers } from './list-transfers';
-import { getAccountById, listTransfers } from '../account-service';
+import { getAccountById } from '../../account/account-service';
+import { listTransfers } from '../transfers-service';
 
-jest.mock('../account-service');
+jest.mock('../transfers-service');
+jest.mock('../../account/account-service');
 
 const mockGetAccountById = <jest.Mock>getAccountById;
 const mockListTransfers = <jest.Mock>listTransfers;

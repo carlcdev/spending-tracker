@@ -1,6 +1,7 @@
 import { logger } from '@packages/logger';
 import { NotFound } from '@packages/errors';
-import { getAccountById, listTransfers, Transfer } from '../account-service';
+import { getAccountById } from '../../account/account-service';
+import { listTransfers, Transfer } from '../../transfers/transfers-service';
 
 export interface ListTransfers {
   correlationId: string;
