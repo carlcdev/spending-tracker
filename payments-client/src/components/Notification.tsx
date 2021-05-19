@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Layer } from 'grommet';
-import { selectNotification, close } from '../state/slices/notification';
+import {
+  selectNotification,
+  close,
+  NotificationType,
+} from '../state/slices/notification';
 import { useAppSelector, useAppDispatch } from '../hooks';
 
 const NotificationLayer = styled(Layer)<{ type: string }>`
@@ -13,9 +17,20 @@ const NotificationLayer = styled(Layer)<{ type: string }>`
   color: #fff;
 `;
 
+function getTypeLabel(type: NotificationType): string {
+  switch (type) {
+    case 'warning':
+      return 'Warning: ';
+    case 'error':
+    default:
+      return 'Error: ';
+  }
+}
+
 export function Notification() {
   const dispatch = useAppDispatch();
   const { open, message, type } = useAppSelector(selectNotification);
+  const typeLabel = getTypeLabel(type);
 
   setTimeout(() => {
     dispatch(close());
@@ -25,6 +40,7 @@ export function Notification() {
     <>
       {open && (
         <NotificationLayer
+          role="alert"
           position="bottom"
           modal={false}
           margin={{ vertical: 'medium', horizontal: 'small' }}
@@ -32,7 +48,10 @@ export function Notification() {
           plain
           type={type}
         >
-          <p>{message}</p>
+          <p>
+            {typeLabel}
+            {message}
+          </p>
         </NotificationLayer>
       )}
     </>
