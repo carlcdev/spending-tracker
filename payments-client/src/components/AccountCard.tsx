@@ -3,14 +3,19 @@ import styled from 'styled-components';
 import { Loading } from '../components/Loading';
 
 const defaultProps = {
-  accountSelected: false,
   loading: false,
   balance: 0,
   accountNumber: '',
 };
 
+type AccountProp = {
+  balance: number;
+  accountNumber: string;
+};
+
 type Props = {
-  noAccountSelectedComponent: React.ReactNode;
+  account?: AccountProp;
+  noAccountSelectedComponent: React.ReactElement;
 } & typeof defaultProps;
 
 const blueGradient = 'linear-gradient(rgb(111 106 255), rgb(81 76 255))';
@@ -90,12 +95,11 @@ const Balance = styled.div`
 `;
 
 export function AccountCard({
-  accountSelected,
   noAccountSelectedComponent,
   loading,
-  balance,
-  accountNumber,
+  account,
 }: Props) {
+  const accountSelected = !!account;
   return (
     <AccountCardContainer accountSelected={accountSelected}>
       {loading && (
@@ -109,13 +113,13 @@ export function AccountCard({
       {!loading && (
         <AccountCardBody accountSelected={accountSelected}>
           <BankName>bank</BankName>
-          <AccountNumber>{accountNumber}</AccountNumber>
+          <AccountNumber>{account?.accountNumber}</AccountNumber>
           <BalanceContainer>
             <Balance>
               {new Intl.NumberFormat('en-GB', {
                 style: 'currency',
                 currency: 'GBP',
-              }).format(balance)}
+              }).format(account?.balance || 0)}
             </Balance>
           </BalanceContainer>
         </AccountCardBody>
