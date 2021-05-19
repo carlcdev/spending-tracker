@@ -67,7 +67,12 @@ export const createTransfer = createAsyncThunk(
 
       return thunkApi.rejectWithValue(unknownErrorResponse);
     } catch (err) {
-      console.error(err); // Wouldnt exist in prod
+      thunkApi.dispatch(
+        open({
+          message: err.message, // Wouldnt want this message going to the user in prod
+          type: 'error',
+        })
+      );
       return thunkApi.rejectWithValue('An unknown error occurred');
     }
   }
@@ -94,7 +99,12 @@ export const listTransfers = createAsyncThunk(
 
       return thunkApi.rejectWithValue(unknownErrorResponse);
     } catch (err) {
-      console.error(err); // Wouldnt exist in prod
+      thunkApi.dispatch(
+        open({
+          message: err.message, // Wouldnt want this message going to the user in prod
+          type: 'error',
+        })
+      );
       return thunkApi.rejectWithValue('An unknown error occurred');
     }
   }

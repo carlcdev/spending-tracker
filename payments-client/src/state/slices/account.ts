@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getAccountById, postAccount } from '../../services/account-service';
+import { open } from '../../state/slices/notification';
 
 export interface Account {
   id: string;
@@ -37,7 +38,12 @@ export const fetchAccountById = createAsyncThunk(
 
       return thunkApi.rejectWithValue(unknownErrorResponse);
     } catch (err) {
-      console.error(err); // Wouldnt exist in prod
+      thunkApi.dispatch(
+        open({
+          message: err.message, // Wouldnt want this message going to the user in prod
+          type: 'error',
+        })
+      );
       return thunkApi.rejectWithValue('An unknown error occurred');
     }
   }
@@ -64,7 +70,12 @@ export const createAccount = createAsyncThunk(
 
       return thunkApi.rejectWithValue(unknownErrorResponse);
     } catch (err) {
-      console.error(err); // Wouldnt exist in prod
+      thunkApi.dispatch(
+        open({
+          message: err.message, // Wouldnt want this message going to the user in prod
+          type: 'error',
+        })
+      );
       return thunkApi.rejectWithValue('An unknown error occurred');
     }
   }
