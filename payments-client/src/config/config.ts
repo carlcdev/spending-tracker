@@ -1,1 +1,1 @@
-export const API_URL = 'http://localhost:3000/dev'; // TODO: Get from ENV var
+export const API_URL = 'http://localhost:3000/dev'; // Get from ENV

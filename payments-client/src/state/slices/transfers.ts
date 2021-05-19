@@ -23,18 +23,21 @@ export interface Transfer {
 
 interface TransfersState {
   transfers: Transfer[];
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed' | 'not-found';
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed';
 }
 
 export const createTransfer = createAsyncThunk(
   'account/createTransferStatus',
   async ({ accountId, value, type }: CreateTransfer, thunkApi) => {
-    // Adding a delay so you can appreciate the UI :)
-    await new Promise((resolve) => {
-      setTimeout(resolve, 1000);
-    });
-
     try {
+      // Adding 1s delay so you can appreciate the UI :) - not production ready, too fast locally
+      await new Promise((resolve) =>
+        setTimeout(
+          resolve,
+          parseInt(process.env.REACT_APP_SERVICE_DELAY as string)
+        )
+      );
+
       const createTransferMethod = type === 'CREDIT' ? postCredit : postDebit;
       const createTransferResponse = await createTransferMethod({
         accountId,
@@ -81,12 +84,15 @@ export const createTransfer = createAsyncThunk(
 export const listTransfers = createAsyncThunk(
   'account/listTransfersStatus',
   async (accountId: string, thunkApi) => {
-    // Adding a delay so you can appreciate the UI :)
-    await new Promise((resolve) => {
-      setTimeout(resolve, 1000);
-    });
-
     try {
+      // Adding 1s delay so you can appreciate the UI :) - not production ready, too fast locally
+      await new Promise((resolve) =>
+        setTimeout(
+          resolve,
+          parseInt(process.env.REACT_APP_SERVICE_DELAY as string)
+        )
+      );
+
       const transfersResponse = await getTransfers(accountId);
 
       if (transfersResponse.status === 200) {

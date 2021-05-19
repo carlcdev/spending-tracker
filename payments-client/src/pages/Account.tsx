@@ -182,6 +182,7 @@ export function Account() {
           >
             <TextInput
               name="amount"
+              aria-label="amount-input"
               type="number"
               min="0"
               step="0.01"
@@ -201,6 +202,7 @@ export function Account() {
             <Select
               id="type"
               name="type"
+              aria-label="type-select"
               placeholder="Type"
               options={['CREDIT', 'DEBIT']}
             />

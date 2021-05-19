@@ -10,18 +10,29 @@ export interface Account {
 interface AccountState {
   id: string;
   balance: number;
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed' | 'not-found';
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed';
+  accountStatus: 'found' | 'not-found' | 'unknown';
 }
+
+const initialState: AccountState = {
+  id: '',
+  balance: 0,
+  loading: 'idle',
+  accountStatus: 'unknown',
+};
 
 export const fetchAccountById = createAsyncThunk(
   'account/fetchAccountByIdStatus',
   async (accountId: string, thunkApi) => {
-    // Adding a delay so you can appreciate the UI :)
-    await new Promise((resolve) => {
-      setTimeout(resolve, 1000);
-    });
-
     try {
+      // Adding 1s delay so you can appreciate the UI :) - not production ready, too fast locally
+      await new Promise((resolve) =>
+        setTimeout(
+          resolve,
+          parseInt(process.env.REACT_APP_SERVICE_DELAY as string)
+        )
+      );
+
       const accountResponse = await getAccountById(accountId);
 
       if (accountResponse.status === 200) {
@@ -52,12 +63,15 @@ export const fetchAccountById = createAsyncThunk(
 export const createAccount = createAsyncThunk(
   'account/createAccountStatus',
   async (accountId: string, thunkApi) => {
-    // Adding a delay so you can appreciate the UI :)
-    await new Promise((resolve) => {
-      setTimeout(resolve, 1000);
-    });
-
     try {
+      // Adding 1s delay so you can appreciate the UI :) - not production ready, too fast locally
+      await new Promise((resolve) =>
+        setTimeout(
+          resolve,
+          parseInt(process.env.REACT_APP_SERVICE_DELAY as string)
+        )
+      );
+
       const accountResponse = await postAccount(accountId);
 
       if (accountResponse.status === 201) {
@@ -70,6 +84,7 @@ export const createAccount = createAsyncThunk(
 
       return thunkApi.rejectWithValue(unknownErrorResponse);
     } catch (err) {
+      console.log('err', err);
       thunkApi.dispatch(
         open({
           message: err.message, // Wouldnt want this message going to the user in prod
@@ -81,19 +96,10 @@ export const createAccount = createAsyncThunk(
   }
 );
 
-const initialState: AccountState = {
-  id: '',
-  balance: 0,
-  loading: 'idle',
-};
-
 const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
-    accountNotFound(state) {
-      state.loading = 'not-found';
-    },
     creditBalance(state, action) {
       state.balance = state.balance + action.payload;
     },
@@ -109,24 +115,26 @@ const accountSlice = createSlice({
         state.loading = 'pending';
       })
       .addCase(fetchAccountById.fulfilled, (state, action) => {
+        state.accountStatus = 'found';
         state.balance = action.payload.balance;
         state.id = action.payload.id;
         state.loading = 'succeeded';
       })
       .addCase(fetchAccountById.rejected, (state, action) => {
         if (action.payload === 404) {
-          state.loading = 'not-found';
-        } else {
-          state.loading = 'failed';
+          state.accountStatus = 'not-found';
         }
+
+        state.loading = 'failed';
       })
       .addCase(createAccount.pending, (state, action) => {
         state.loading = 'pending';
       })
       .addCase(createAccount.fulfilled, (state, action) => {
+        state.accountStatus = 'found';
+        state.loading = 'succeeded';
         state.balance = action.payload.balance;
         state.id = action.payload.id;
-        state.loading = 'succeeded';
       })
       .addCase(createAccount.rejected, (state, action) => {
         state.loading = 'failed';
@@ -137,5 +145,4 @@ const accountSlice = createSlice({
 export const selectAccount = (state: any): AccountState => state.account;
 
 export const accountReducer = accountSlice.reducer;
-export const { accountNotFound, creditBalance, debitBalance } =
-  accountSlice.actions;
+export const { creditBalance, debitBalance } = accountSlice.actions;
