@@ -99,7 +99,7 @@ export function AccountCard({
   loading,
   account,
 }: Props) {
-  const accountSelected = !!account;
+  const accountSelected = !!account?.accountNumber;
   return (
     <AccountCardContainer accountSelected={accountSelected}>
       {loading && (
