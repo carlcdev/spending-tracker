@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { accountReducer } from './state/slices/account';
-import { transfersReducer } from './state/slices/transfers';
-import { notificationReducer } from './state/slices/notification';
+import { accountReducer } from './slices/account';
+import { transfersReducer } from './slices/transfers';
+import { notificationReducer } from './slices/notification';
 
 export const store = configureStore({
   reducer: {

@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import { Grommet } from 'grommet';
 import { Provider } from 'react-redux';
 import { grommetTheme } from '../theme/grommet-theme';
-import { store } from '../store';
+import { store } from '../state/store';
 import * as theme from '../theme/theme';
 
 const AllTheProviders: any = ({

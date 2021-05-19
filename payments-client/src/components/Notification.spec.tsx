@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, act } from '../config/test-utils';
-import { Provider } from 'react-redux';
-import { store } from '../store';
+import { store } from '../state/store';
 import { Notification } from './Notification';
 import { open } from '../state/slices/notification';
 

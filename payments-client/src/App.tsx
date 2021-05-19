@@ -8,7 +8,7 @@ import { grommetTheme } from './theme/grommet-theme';
 import * as theme from './theme/theme';
 import { Routes } from './Routes';
 import { Notification } from './components/Notification';
-import { store } from './store';
+import { store } from './state/store';
 
 function App() {
   return (
