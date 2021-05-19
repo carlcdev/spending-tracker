@@ -11,18 +11,25 @@ import { notificationReducer } from '../state/slices/notification';
 import { transfersReducer } from '../state/slices/transfers';
 import * as theme from '../theme/theme';
 
+let store: any;
+
+export function getStore() {
+  return store;
+}
+
 const AllTheProviders: any = ({
   children,
 }: {
   children: React.ReactElement;
 }) => {
-  const store = configureStore({
+  store = configureStore({
     reducer: {
       account: accountReducer,
       notification: notificationReducer,
       transfers: transfersReducer,
     },
   });
+
   return (
     <Grommet theme={grommetTheme}>
       <ThemeProvider theme={theme}>

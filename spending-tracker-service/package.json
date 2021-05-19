@@ -1,7 +1,7 @@
 {
-    "name": "payments-service",
+    "name": "spending-tracker-service",
     "version": "1.0.0",
-    "description": "A simple payments service",
+    "description": "A simple spending tracker service",
     "main": "index.ts",
     "scripts": {
         "build": "sls package",

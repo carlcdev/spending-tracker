@@ -1,12 +1,10 @@
 import React from 'react';
-import { render, screen, act } from '../config/test-utils';
-import { store } from '../state/store';
-import { Notification } from './Notification';
+import { render, screen, act, getStore } from '../config/test-utils';
 import { open } from '../state/slices/notification';
 
 describe('Notification', () => {
   it('should be hidden by default', () => {
-    render(<Notification />);
+    render(<p />);
 
     const notification = screen.queryByRole(/alert/i);
 
@@ -14,10 +12,10 @@ describe('Notification', () => {
   });
 
   it('should show the notification when open', async () => {
-    render(<Notification />);
+    render(<p />);
 
     await act(async () => {
-      store.dispatch(
+      getStore().dispatch(
         open({
           message: 'Test Message',
           type: 'error',
@@ -32,10 +30,10 @@ describe('Notification', () => {
 
   describe('when the type is error', () => {
     it('should show the error label with the message', async () => {
-      render(<Notification />);
+      render(<p />);
 
       await act(async () => {
-        store.dispatch(
+        getStore().dispatch(
           open({
             message: 'Error Message',
             type: 'error',
@@ -51,10 +49,10 @@ describe('Notification', () => {
 
   describe('when the type is warning', () => {
     it('should show the warning label with the message', async () => {
-      render(<Notification />);
+      render(<p />);
 
       await act(async () => {
-        store.dispatch(
+        getStore().dispatch(
           open({
             message: 'Warning Message',
             type: 'warning',

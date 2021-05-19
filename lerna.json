@@ -1,4 +1,4 @@
 {
-    "packages": ["packages/*", "payments-service", "payments-client"],
+    "packages": ["packages/*", "spending-tracker-service", "spending-tracker-client"],
     "version": "0.0.0"
 }

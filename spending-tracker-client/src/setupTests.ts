@@ -6,6 +6,7 @@ import '@testing-library/jest-dom';
 import { server } from './config/test-server';
 
 global.scrollTo = jest.fn();
+process.env.REACT_APP_SERVICE_DELAY = '0';
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
