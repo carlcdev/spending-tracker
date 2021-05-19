@@ -44,7 +44,7 @@ export function TransfersList({ transfers, ...props }: Props) {
             <TableCell>
               {new Intl.DateTimeFormat('en-GB', {
                 dateStyle: 'short',
-                timeStyle: 'long',
+                timeStyle: 'medium',
               }).format(new Date(transfer.created))}
             </TableCell>
           </TableRow>
