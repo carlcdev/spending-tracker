@@ -34,7 +34,7 @@ export function Notification() {
 
   setTimeout(() => {
     dispatch(close());
-  }, 3000); // Could pass timeout as prop
+  }, 5000); // Could pass timeout as prop
 
   return (
     <>
