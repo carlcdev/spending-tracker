@@ -107,7 +107,7 @@ export function Account() {
     if (prevBalance > 0 && accountState.balance === 0) {
       dispatch(
         open({
-          message: 'Warning: your balance has reached 0',
+          message: 'Your balance has reached 0',
           type: 'warning',
         })
       );
@@ -137,10 +137,11 @@ export function Account() {
       <AccountCardContainer accountSelected={accountSelected}>
         <AccountCard
           loading={loading}
-          accountSelected={accountSelected}
+          account={{
+            accountNumber: accountState.id,
+            balance: accountState.balance,
+          }}
           noAccountSelectedComponent={<NoAccountFoundComponent />}
-          accountNumber={accountState.id}
-          balance={accountState.balance}
         />
       </AccountCardContainer>
       <TransfersContainer accountSelected={accountSelected}>

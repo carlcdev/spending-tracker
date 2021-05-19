@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export type NotificationType = 'error' | 'warning';
 interface NotificationState {
   message: string;
   open: boolean;
-  type: 'error' | 'warning'; // Could extend with success etc but only needed for error in this project
+  type: NotificationType; // Could extend with success etc but not currently needed for this project
 }
-
 interface OpenNotificationAction {
   message: string;
-  type: 'error' | 'warning';
+  type: NotificationType;
 }
 
 const initialState: NotificationState = {
