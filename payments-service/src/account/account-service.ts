@@ -1,21 +1,9 @@
-import { logger } from '@packages/logger';
 import * as AWS from 'aws-sdk';
+import { getDynamoEndpoint } from '../utils/get-dynamo-endpoint';
+import { config } from '../config/config';
 export interface Account {
   id: string;
   balance: number;
-}
-
-function getDynamoEndpoint() {
-  if (process.env.STAGE === 'local') {
-    // TODO: get from config
-    logger.info(
-      'running locally, configuring AWS.DynamoDB to point to localstack'
-    );
-
-    return 'http://localhost:4566';
-  }
-
-  return undefined;
 }
 
 const dynamo = new AWS.DynamoDB.DocumentClient({
@@ -25,7 +13,7 @@ const dynamo = new AWS.DynamoDB.DocumentClient({
 export async function getAccountById(id: string): Promise<Account> {
   const account = await dynamo
     .query({
-      TableName: 'local-accounts', // TODO: get from config
+      TableName: config.accountsTableName,
       KeyConditionExpression: '#id = :id',
       ExpressionAttributeNames: {
         '#id': 'id',
@@ -49,7 +37,7 @@ export async function createAccount(id: string): Promise<Account> {
 
   await dynamo
     .put({
-      TableName: 'local-accounts', // TODO: get from config
+      TableName: config.accountsTableName,
       Item: accountToCreate,
       ConditionExpression: 'attribute_not_exists(id)',
     })

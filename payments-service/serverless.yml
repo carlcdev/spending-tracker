@@ -11,6 +11,8 @@ provider:
     shouldStartNameWithService: true
     minimumCompressionSize: 1024
   environment:
+    ACCOUNTS_TABLE_NAME: ${self:provider.stage}-accounts
+    TRANSFERS_TABLE_NAME: ${self:provider.stage}-transfers
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
 plugins:
   - serverless-bundle

@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
-import { logger } from '@packages/logger';
 import * as AWS from 'aws-sdk';
+import { config } from '../config/config';
+import { getDynamoEndpoint } from '../utils/get-dynamo-endpoint';
 
 export enum TransferType {
   DEBIT = 'DEBIT',
@@ -13,19 +14,6 @@ export interface Transfer {
   type: TransferType;
   created: string;
   value: number;
-}
-
-function getDynamoEndpoint() {
-  if (process.env.STAGE === 'local') {
-    // TODO: get from config
-    logger.info(
-      'running locally, configuring AWS.DynamoDB to point to localstack'
-    );
-
-    return 'http://localhost:4566';
-  }
-
-  return undefined;
 }
 
 const dynamo = new AWS.DynamoDB.DocumentClient({
@@ -50,14 +38,14 @@ export async function creditAccount(
       TransactItems: [
         {
           Put: {
-            TableName: 'local-transfers', // TODO: get from config
+            TableName: config.transfersTableName,
             Item: creditRecord,
             ConditionExpression: 'attribute_not_exists(id)',
           },
         },
         {
           Update: {
-            TableName: 'local-accounts',
+            TableName: config.accountsTableName,
             Key: { id: accountId },
             UpdateExpression: 'set #balance = #balance + :creditValue',
             ExpressionAttributeNames: { '#balance': 'balance' },
@@ -92,14 +80,14 @@ export async function debitAccount(
       TransactItems: [
         {
           Put: {
-            TableName: 'local-transfers', // TODO: get from config
+            TableName: config.transfersTableName,
             Item: debitRecord,
             ConditionExpression: 'attribute_not_exists(id)',
           },
         },
         {
           Update: {
-            TableName: 'local-accounts',
+            TableName: config.accountsTableName,
             Key: { id: accountId },
             UpdateExpression: 'set #balance = #balance - :debitValue',
             ConditionExpression: '#balance > :min',
@@ -121,8 +109,8 @@ export async function debitAccount(
 export async function listTransfers(accountId: string): Promise<Transfer[]> {
   const transfers = await dynamo
     .query({
-      TableName: 'local-transfers', // TODO: get from config
-      IndexName: 'local-transfers-gsi-1',
+      TableName: config.transfersTableName,
+      IndexName: `${config.transfersTableName}-gsi-1`,
       KeyConditionExpression: 'accountId = :accountId',
       ExpressionAttributeValues: {
         ':accountId': accountId,

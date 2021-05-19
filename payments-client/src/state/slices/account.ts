@@ -84,7 +84,6 @@ export const createAccount = createAsyncThunk(
 
       return thunkApi.rejectWithValue(unknownErrorResponse);
     } catch (err) {
-      console.log('err', err);
       thunkApi.dispatch(
         open({
           message: err.message, // Wouldnt want this message going to the user in prod

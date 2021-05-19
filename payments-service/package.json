@@ -8,7 +8,7 @@
         "deploy": "sls deploy",
         "environment": "docker-compose up",
         "deploy:local": "sls deploy --stage local",
-        "start": "STAGE=local sls offline",
+        "start": "STAGE=local sls offline --stage=local",
         "test": "jest --config jestconfig.json",
         "test:watch": "jest --config jestconfig.json --watch",
         "lint": "eslint src --ext .ts"
