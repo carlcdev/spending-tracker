@@ -1,11 +1,13 @@
 openapi: '3.0.0'
 info:
-  description: 'Example simple payments service'
+  description: 'Example spending tracker service'
   version: 1.0.0
-  title: Example simple payments service
+  title: Example spending tracker service
 tags:
   - name: Account
     description: Account specific functionality
+  - name: Transfer
+    description: Transfer specific functionality
 paths:
   /accounts:
     post:
@@ -57,7 +59,7 @@ paths:
   /accounts/{accountId}/transfers:
     get:
       tags:
-        - Account
+        - Transfer
       summary: List transfer records in date order
       description: 'List transfer records in date order'
       parameters:
@@ -85,7 +87,7 @@ paths:
   /accounts/{accountId}/transfers/credit:
     post:
       tags:
-        - Account
+        - Transfer
       summary: Create a credit transfer record
       description: Credit an account
       parameters:
@@ -117,7 +119,7 @@ paths:
   /accounts/{accountId}/transfers/debit:
     post:
       tags:
-        - Account
+        - Transfer
       summary: Create a debit transfer record
       description: Debit an account
       parameters:
@@ -167,6 +169,10 @@ components:
           enum:
             - DEBIT
             - CREDIT
+        id:
+          type: string
+        accountId:
+          type: string
         value:
           type: number
         created:

@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "0fe50fa0-5cb6-483f-a142-ee19c5c87998",
-		"name": "Example Payment Service",
+		"name": "Example Service",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -11,14 +11,14 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/dev/accounts",
+					"raw": "http://localhost:3000/local/accounts",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"dev",
+						"local",
 						"accounts"
 					]
 				},
@@ -47,14 +47,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/dev/accounts/12345678/transfers/credit",
+					"raw": "http://localhost:3000/local/accounts/12345678/transfers/credit",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"dev",
+						"local",
 						"accounts",
 						"12345678",
 						"transfers",
@@ -86,14 +86,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/dev/accounts/12345678/transfers/debit",
+					"raw": "http://localhost:3000/local/accounts/12345678/transfers/debit",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"dev",
+						"local",
 						"accounts",
 						"12345678",
 						"transfers",
@@ -110,14 +110,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/dev/accounts/12345678",
+					"raw": "http://localhost:3000/local/accounts/12345678",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"dev",
+						"local",
 						"accounts",
 						"12345678"
 					]

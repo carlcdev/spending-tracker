@@ -1,6 +1,6 @@
 # payments-service
 
-A simple payments service, using Node, TypeScript and Lerna.
+A simple spending tracker service, using Serverless, Node, TypeScript, Lerna and DynamoDB.
 
 ## Prerequisites
 
@@ -11,11 +11,11 @@ A simple payments service, using Node, TypeScript and Lerna.
 
 A visual representation of the solution:
 
-![image architecture](./docs/architecture.png)
+![image architecture](./docs/spending-tracker-architecture.png)
 
 ## API documentation
 
-The API is documented using the OpenAPI specification. To view/edit the docs, copy the contents of the [payments-service.yaml](./docs/payments-service.yml) into the [Swagger Editor](https://editor.swagger.io/)
+The API is documented using the OpenAPI specification. To view/edit the docs, copy the contents of the [spending-tracker-service.yaml](./docs/spending-tracker-service.yml) into the [Swagger Editor](https://editor.swagger.io/)
 
 ## Installation
 
@@ -24,22 +24,17 @@ Run `npm i` in your terminal
 ## Run the environment
 Run `npm run environment` in your terminal to start DynamoDB.
 
-## Run the Service
+## Deploy the environment locally
+Ensure the environment is running in docker and type `npm run deploy:local` in your terminal to deploy the API cloudformation to localstack.
 
+## Run the Service
 Run `npm run start` in your terminal to start the API and client.
 
 ## Unit tests
+To run all of the tests in the monorepo run `npm run test` from the root dir.
 
-cd into the relevant project and type `npm run test` in your terminal to run the unit tests
+Alternatively you can cd into the relevant project and type `npm run test` in your terminal to run the unit tests
 
-## Code coverage
-
-Run `npm run test:coverage` in your terminal. A `coverage` directory is generated in the root of the repository. To view the coverage, open the `index.html` file in that directory.
-
-## Deploy the API
+## Deploy the API to AWS
 
 Run `npm run deploy` to provision / update the API in AWS
-
-## Notes
-
-Left comments in code as discussion points
