@@ -1,4 +1,4 @@
-# payments-service
+# Spending Tracker
 
 A simple spending tracker service, using Serverless, Node, TypeScript, Lerna and DynamoDB.
 
