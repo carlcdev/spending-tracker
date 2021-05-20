@@ -10,5 +10,5 @@ services:
       - SERVICES=s3,sns,sqs,sts,apigateway,lambda,dynamodb,cloudformation,iam
       - DEFAULT_REGION=eu-west-1
     volumes:
-      - "${TMP_DIR:-/tmp/localstack}:${TMP_DIR:-/tmp/localstack}"
+      - "/tmp/localstack:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"

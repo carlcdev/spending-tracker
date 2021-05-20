@@ -23,14 +23,20 @@ There is also a [postman collection](./docs/spending-tracker.postman_collection-
 
 Clone the repo and run `npm i` in your terminal from the root directory.
 
-## Run the environment
-Run `npm run environment` in your terminal to start localstack, only used for DynamoDB in this example.
+## Running locally
 
-## Deploy the API locally
+### Run the environment
+Run `npm run environment` in your terminal to start localstack, only used for DynamoDB in this example. It can take a few minutes to pull the localstack image from the Docker repository on first run.
+
+> Docker must be installed and running
+
+### Deploy the API locally
 Ensure the environment is running in docker and type `npm run deploy:local` in your terminal to deploy the API cloudformation to localstack.
 
-## Run the API and Client
+### Run the API and Client
 Run `npm run start` in your terminal to start the API and client.
+
+> Ensure the environment is running and deployed by following the steps above
 
 ## Unit tests
 To run all of the tests in the monorepo run `npm run test` from the root dir.
