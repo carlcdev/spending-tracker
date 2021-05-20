@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { creditBalance, debitBalance } from './account';
 import { open } from './notification';
@@ -40,6 +41,7 @@ export const createTransfer = createAsyncThunk(
 
       const createTransferMethod = type === 'CREDIT' ? postCredit : postDebit;
       const createTransferResponse = await createTransferMethod({
+        transactionId: uuid(),
         accountId,
         value,
       });

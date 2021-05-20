@@ -18,7 +18,7 @@ describe('create-credit-api-gateway', () => {
   beforeEach(() => {
     mockEvent = {
       requestContext: {
-        requestId: 'uuid',
+        requestId: 'correlationId',
       },
       headers: {
         'Idempotency-Key': 'idempotencyKey',
@@ -27,6 +27,7 @@ describe('create-credit-api-gateway', () => {
         accountId: 'accountId',
       },
       body: JSON.stringify({
+        transactionId: '612397cd-314c-434e-b34a-943fcae13bf3',
         value: 100,
       }),
     };
@@ -75,12 +76,43 @@ describe('create-credit-api-gateway', () => {
     });
   });
 
+  describe('when the transactionId is invalid', () => {
+    it('should return a 400 when the transactionId is undefined', async () => {
+      mockEvent.body = JSON.stringify({
+        transactionId: undefined,
+        value: 100,
+      });
+
+      const result = await createCreditApiGateway(mockEvent);
+
+      expect(result).toEqual({
+        statusCode: 400,
+        body: JSON.stringify('transactionId must be a valid uuid'),
+      });
+    });
+
+    it('should return a 400 when the transactionId is not a uuid', async () => {
+      mockEvent.body = JSON.stringify({
+        transactionId: 'not-a-uuid',
+        value: 100,
+      });
+
+      const result = await createCreditApiGateway(mockEvent);
+
+      expect(result).toEqual({
+        statusCode: 400,
+        body: JSON.stringify('transactionId must be a valid uuid'),
+      });
+    });
+  });
+
   describe('when a successful request is made', () => {
-    it('should call createCreditHandler with the correlationId, account id, idempotencyKey and value', async () => {
+    it('should call createCreditHandler with the correlationId, accountId, idempotencyKey, transactionId and valu', async () => {
       await createCreditApiGateway(mockEvent);
 
       expect(createCreditHandler).toBeCalledWith({
-        correlationId: 'uuid',
+        transactionId: '612397cd-314c-434e-b34a-943fcae13bf3',
+        correlationId: 'correlationId',
         accountId: 'accountId',
         idempotencyKey: 'idempotencyKey',
         value: 100,
@@ -89,7 +121,7 @@ describe('create-credit-api-gateway', () => {
 
     it('should return a 201 with the credit transfer record', async () => {
       mockedCreateCreditHandler.mockResolvedValueOnce({
-        id: 'credit-transfer-id',
+        id: '612397cd-314c-434e-b34a-943fcae13bf3',
         accountId: 'account-id',
         type: 'CREDIT',
         created: '2021-01-01T00:00:00Z',
@@ -101,7 +133,7 @@ describe('create-credit-api-gateway', () => {
       expect(result).toEqual({
         statusCode: 201,
         body: JSON.stringify({
-          id: 'credit-transfer-id',
+          id: '612397cd-314c-434e-b34a-943fcae13bf3',
           accountId: 'account-id',
           type: 'CREDIT',
           created: '2021-01-01T00:00:00Z',

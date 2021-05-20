@@ -160,6 +160,8 @@ components:
       required:
         - value
       properties:
+        transactionId:
+          type: string
         value:
           type: number
     Transfer:

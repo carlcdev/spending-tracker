@@ -1,3 +1,4 @@
+import { validate as uuidValidate } from 'uuid';
 import { logger, initLogger } from '@packages/logger';
 import { BadRequest, apiGatewayErrorTransformer } from '@packages/errors';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
@@ -18,7 +19,7 @@ export async function createDebitApiGateway(
       throw new BadRequest('a request body is required');
     }
 
-    const { value } = body;
+    const { value, transactionId } = body;
 
     if (typeof value !== 'number') {
       throw new BadRequest('value must be a number');
@@ -28,9 +29,14 @@ export async function createDebitApiGateway(
       throw new BadRequest('idempotencyKey is required');
     }
 
+    if (!uuidValidate(transactionId)) {
+      throw new BadRequest('transactionId must be a valid uuid');
+    }
+
     const payload = {
       correlationId: event.requestContext.requestId,
       accountId,
+      transactionId,
       idempotencyKey,
       value,
     };

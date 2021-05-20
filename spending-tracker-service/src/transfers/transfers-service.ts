@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import * as AWS from 'aws-sdk';
 import { config } from '../config/config';
 import { getDynamoEndpoint } from '../utils/get-dynamo-endpoint';
@@ -21,12 +20,13 @@ const dynamo = new AWS.DynamoDB.DocumentClient({
 });
 
 export async function creditAccount(
+  transactionId: string,
   accountId: string,
   value: number,
   idempotencyKey: string
 ): Promise<Transfer> {
   const creditRecord: Transfer = {
-    id: uuid(),
+    id: transactionId,
     accountId,
     type: TransferType.CREDIT,
     created: new Date().toISOString(),
@@ -63,12 +63,13 @@ export async function creditAccount(
 }
 
 export async function debitAccount(
+  transactionId: string,
   accountId: string,
   value: number,
   idempotencyKey: string
 ): Promise<Transfer> {
   const debitRecord: Transfer = {
-    id: uuid(),
+    id: transactionId,
     accountId,
     type: TransferType.DEBIT,
     created: new Date().toISOString(),

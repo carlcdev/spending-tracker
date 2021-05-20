@@ -57,6 +57,7 @@ Run `npm run deploy` to provision / update the API in AWS
 
     - Add monitoring and alerting to the solution
     - Add authentication and authorisation using lambda authorisers
+    - Use AJV for validation
     - Additional validation checking
     - Load test the application
     - Remove hard coded account number

@@ -6,11 +6,13 @@ import { creditAccount, Transfer } from '../../transfers/transfers-service';
 export interface CreateCredit {
   correlationId: string;
   accountId: string;
+  transactionId: string;
   idempotencyKey: string;
   value: number;
 }
 
 export async function createCreditHandler({
+  transactionId,
   correlationId,
   accountId,
   idempotencyKey,
@@ -38,5 +40,5 @@ export async function createCreditHandler({
     value,
   });
 
-  return creditAccount(accountId, value, idempotencyKey);
+  return creditAccount(transactionId, accountId, value, idempotencyKey);
 }

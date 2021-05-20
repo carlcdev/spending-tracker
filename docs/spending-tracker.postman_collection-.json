@@ -39,7 +39,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"value\": 100\n}",
+					"raw": "{\n    \"transactionId\": \"{{$guid}}\",\n    \"value\": 100\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -78,7 +78,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"value\": 100\n}",
+					"raw": "{\n    \"transactionId\": {{$guid}},\n    \"value\": 100\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -132,14 +132,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/dev/accounts/12345678/transfers",
+					"raw": "http://localhost:3000/local/accounts/12345678/transfers",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"dev",
+						"local",
 						"accounts",
 						"12345678",
 						"transfers"

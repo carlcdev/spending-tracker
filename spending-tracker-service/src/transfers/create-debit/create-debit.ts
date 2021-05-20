@@ -6,6 +6,7 @@ import { Transfer, debitAccount } from '../transfers-service';
 export interface CreateDebit {
   correlationId: string;
   accountId: string;
+  transactionId: string;
   idempotencyKey: string;
   value: number;
 }
@@ -14,6 +15,7 @@ export async function createDebitHandler({
   correlationId,
   accountId,
   idempotencyKey,
+  transactionId,
   value,
 }: CreateDebit): Promise<Transfer> {
   const loggerContext = {
@@ -42,5 +44,5 @@ export async function createDebitHandler({
     value,
   });
 
-  return debitAccount(accountId, value, idempotencyKey);
+  return debitAccount(transactionId, accountId, value, idempotencyKey);
 }

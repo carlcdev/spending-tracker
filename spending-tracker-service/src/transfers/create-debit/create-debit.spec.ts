@@ -10,7 +10,8 @@ const mockGetAccountById = <jest.Mock>getAccountById;
 const mockDebitAccount = <jest.Mock>debitAccount;
 
 const mockPayload: CreateDebit = {
-  correlationId: 'uuid',
+  correlationId: 'correlationId',
+  transactionId: 'transactionId',
   accountId: 'accountId',
   idempotencyKey: 'idempotencyKey',
   value: 100,
