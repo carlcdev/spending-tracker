@@ -1,4 +1,5 @@
 import * as AWS from 'aws-sdk';
+import { AppError } from '@packages/errors';
 import { config } from '../config/config';
 import { getDynamoEndpoint } from '../utils/get-dynamo-endpoint';
 
@@ -19,6 +20,29 @@ const dynamo = new AWS.DynamoDB.DocumentClient({
   endpoint: getDynamoEndpoint(),
 });
 
+async function handleIdempotencyFailure(
+  transferRecord: Transfer
+): Promise<Transfer> {
+  const errorMessage = 'Transfer details dont match for idempotency id';
+  const existingTransfer = await getTransferById(transferRecord.id);
+
+  if (existingTransfer) {
+    // If everything except the created date matches, this transaction is fine and can be treated as idempotent
+    if (
+      existingTransfer.id === transferRecord.id &&
+      existingTransfer.accountId === transferRecord.accountId &&
+      existingTransfer.type === transferRecord.type &&
+      existingTransfer.value === transferRecord.value
+    ) {
+      return existingTransfer;
+    }
+
+    throw new AppError(errorMessage);
+  }
+
+  throw new AppError(errorMessage);
+}
+
 export async function creditAccount(
   transactionId: string,
   accountId: string,
@@ -33,33 +57,41 @@ export async function creditAccount(
     value,
   };
 
-  await dynamo
-    .transactWrite({
-      TransactItems: [
-        {
-          Put: {
-            TableName: config.transfersTableName,
-            Item: creditRecord,
-            ConditionExpression: 'attribute_not_exists(id)',
-          },
-        },
-        {
-          Update: {
-            TableName: config.accountsTableName,
-            Key: { id: accountId },
-            UpdateExpression: 'set #balance = #balance + :creditValue',
-            ExpressionAttributeNames: { '#balance': 'balance' },
-            ExpressionAttributeValues: {
-              ':creditValue': value,
+  try {
+    await dynamo
+      .transactWrite({
+        TransactItems: [
+          {
+            Put: {
+              TableName: config.transfersTableName,
+              Item: creditRecord,
+              ConditionExpression: 'attribute_not_exists(id)',
             },
           },
-        },
-      ],
-      ClientRequestToken: idempotencyKey,
-    })
-    .promise();
+          {
+            Update: {
+              TableName: config.accountsTableName,
+              Key: { id: accountId },
+              UpdateExpression: 'set #balance = #balance + :creditValue',
+              ExpressionAttributeNames: { '#balance': 'balance' },
+              ExpressionAttributeValues: {
+                ':creditValue': value,
+              },
+            },
+          },
+        ],
+        ClientRequestToken: idempotencyKey,
+      })
+      .promise();
 
-  return creditRecord;
+    return creditRecord;
+  } catch (error) {
+    if (error.code === 'IdempotentParameterMismatchException') {
+      return handleIdempotencyFailure(creditRecord);
+    }
+
+    throw error;
+  }
 }
 
 export async function debitAccount(
@@ -76,35 +108,43 @@ export async function debitAccount(
     value,
   };
 
-  await dynamo
-    .transactWrite({
-      TransactItems: [
-        {
-          Put: {
-            TableName: config.transfersTableName,
-            Item: debitRecord,
-            ConditionExpression: 'attribute_not_exists(id)',
-          },
-        },
-        {
-          Update: {
-            TableName: config.accountsTableName,
-            Key: { id: accountId },
-            UpdateExpression: 'set #balance = #balance - :debitValue',
-            ConditionExpression: '#balance > :min',
-            ExpressionAttributeNames: { '#balance': 'balance' },
-            ExpressionAttributeValues: {
-              ':debitValue': value,
-              ':min': 0,
+  try {
+    await dynamo
+      .transactWrite({
+        TransactItems: [
+          {
+            Put: {
+              TableName: config.transfersTableName,
+              Item: debitRecord,
+              ConditionExpression: 'attribute_not_exists(id)',
             },
           },
-        },
-      ],
-      ClientRequestToken: idempotencyKey,
-    })
-    .promise();
+          {
+            Update: {
+              TableName: config.accountsTableName,
+              Key: { id: accountId },
+              UpdateExpression: 'set #balance = #balance - :debitValue',
+              ConditionExpression: '#balance > :min',
+              ExpressionAttributeNames: { '#balance': 'balance' },
+              ExpressionAttributeValues: {
+                ':debitValue': value,
+                ':min': 0,
+              },
+            },
+          },
+        ],
+        ClientRequestToken: idempotencyKey,
+      })
+      .promise();
 
-  return debitRecord;
+    return debitRecord;
+  } catch (error) {
+    if (error.code === 'IdempotentParameterMismatchException') {
+      return handleIdempotencyFailure(debitRecord);
+    }
+
+    throw error;
+  }
 }
 
 export async function listTransfers(accountId: string): Promise<Transfer[]> {
@@ -123,4 +163,23 @@ export async function listTransfers(accountId: string): Promise<Transfer[]> {
   const items = transfers.Items as Transfer[];
 
   return items;
+}
+
+export async function getTransferById(id: string): Promise<Transfer> {
+  const transfer = await dynamo
+    .query({
+      TableName: config.transfersTableName,
+      KeyConditionExpression: '#id = :id',
+      ExpressionAttributeNames: {
+        '#id': 'id',
+      },
+      ExpressionAttributeValues: {
+        ':id': id,
+      },
+    })
+    .promise();
+
+  const items = transfer.Items as Transfer[];
+
+  return items && items[0];
 }
