@@ -1,7 +1,6 @@
 import { logger } from '@packages/logger';
 import { NotFound } from '@packages/errors';
 import { Account, getAccountById } from '../account-service';
-console.log('ENV', process.env);
 export interface GetAccount {
   correlationId: string;
   accountId: string;
