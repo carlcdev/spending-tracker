@@ -1,6 +1,6 @@
 # Spending Tracker
 
-A simple spending tracker service, using Serverless, Node, TypeScript, Lerna and DynamoDB.
+A simple spending tracker, using Serverless, Node, TypeScript, Lerna and DynamoDB.
 
 ## Prerequisites
 
@@ -17,17 +17,19 @@ A visual representation of the solution:
 
 The API is documented using the OpenAPI specification. To view/edit the docs, copy the contents of the [spending-tracker-service.yaml](./docs/spending-tracker-service.yml) into the [Swagger Editor](https://editor.swagger.io/)
 
+There is also a [postman collection](./docs/spending-tracker.postman_collection-.json) available.
+
 ## Installation
 
-Run `npm i` in your terminal
+Clone the repo and run `npm i` in your terminal from the root directory.
 
 ## Run the environment
-Run `npm run environment` in your terminal to start DynamoDB.
+Run `npm run environment` in your terminal to start localstack, only used for DynamoDB in this example.
 
-## Deploy the environment locally
+## Deploy the API locally
 Ensure the environment is running in docker and type `npm run deploy:local` in your terminal to deploy the API cloudformation to localstack.
 
-## Run the Service
+## Run the API and Client
 Run `npm run start` in your terminal to start the API and client.
 
 ## Unit tests
